@@ -1,25 +1,24 @@
-# SVG Maker App
+# Stickies App
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Thank you for choosing the SVG Maker App! This tool helps you create stunning and customizable SVG graphics with ease. Simply follow the prompts, and you'll have beautiful SVG designs ready in no time.
-
-Let's get started and unleash your creativity! If you have any questions, check the contact info in the Questions section.
-
-Happy designing! 🎨
+Welcome to Stickies! This application is designed to help you easily create, view, and manage your notes. Whether you need to jot down quick reminders, plan your tasks, or keep track of important information, Simple Note Taker has got you covered.
 
 ## Table of Contents
-- [Description](#description)
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Tests](#tests)
 - [Contributing](#contributing)
 - [Links](#links)
 - [Questions](#questions)
 - [License](#license)
 
-## Description
-The SVG Maker App is a user-friendly tool designed to help you create stunning and customizable SVG graphics. Whether you're a graphic designer, web developer, or hobbyist, this app allows you to easily generate SVG designs by following simple prompts.
+Features
+- Create Notes: Quickly create new notes with a title and content.
+- View Notes: View a list of all your notes and read the content of each note.
+- Delete Notes: Remove notes that are no longer needed.
+
+
 
 ## Installation
 Please run the following command to install the required dependencies:
@@ -30,13 +29,7 @@ npm install
 ## Usage
 Please run the following command to start the application:
 ```bash
-node index.js
-```
-
-## Tests
-Please run the following command to execute the tests:
-```bash
-npm test
+npm start
 ```
 
 ## Contributing
@@ -50,6 +43,8 @@ Feel free to contribute to this project by following these steps:
 
 ## Links
 [Github Repo](https://github.com/DRX-88/SVG-Maker)
+
+[Render Live Deployment](https://stickies.onrender.com/notes)
 
 ## Questions
 If you have any questions, you can reach me through the following:
