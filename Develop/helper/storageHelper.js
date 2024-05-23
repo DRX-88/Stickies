@@ -7,7 +7,7 @@ const readFileAsync = util.promisify(fs.readFile);
 class StorageHelper {
     async readFromFile() {
         try {
-            const data = await readFileAsync('Develop/db/db.json', 'utf8');
+            const data = await readFileAsync('db/db.json', 'utf8');
             return data;
         } catch (err) {
             console.log(err);
@@ -17,53 +17,40 @@ class StorageHelper {
 
     async writeToFile(data) {
         try {
-            await writeFileAsync('Develop/db/db.json', JSON.stringify(data));
+            await writeFileAsync('db/db.json', JSON.stringify(data));
         } catch (err) {
             console.log(err);
         }
     }
 
     async getNotes() {
+        const data = await this.readFromFile();
+        let notes;
         try {
-            const data = await this.readFromFile();
-            let parsedNotes = [];
-            try {
-                parsedNotes = [].concat(JSON.parse(data));
-            } catch (err) {
-                console.log(err);
-            }
-            return parsedNotes;
+            notes = [].concat(JSON.parse(data));
+        } catch (err) {
+            notes = [];
         }
-        catch (err) {
-            console.log(err);
-            return [];
-        }
+        return notes;
     }
 
     async addNotes(note) {
-        try {
-            const data = await this.readFromFile();
-            const parsedNotes = [].concat(JSON.parse(data));
-            parsedNotes.push(note);
-            await this.writeToFile(parsedNotes);
-            return note;
-        } catch (err) {
-            console.log(err);
-            return [];
+        const { title, text } = note;
+        if (!title || !text) {
+            throw new Error('Note title and text cannot be blank');
         }
+        const newNote = { title, text, id: Date.now() };
+        const notes = await this.getNotes();
+        const newNotes = [...notes, newNote];
+        await this.writeToFile(newNotes);
+        return newNote;
     }
 
     async deleteNotes(id) {
-        try {
-            const data = await this.readFromFile();
-            const parsedNotes = [].concat(JSON.parse(data));
-            const newNotes = parsedNotes.filter((note) => note.id !== id);
-            await this.writeToFile(newNotes);
-        } catch (err) {
-            console.log(err);
-        }
+        const notes = await this.getNotes();
+        const newNotes = notes.filter((note) => note.id !== parseInt(id));
+        await this.writeToFile(newNotes);
     }
-
 }
 
 module.exports = new StorageHelper();
