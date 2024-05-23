@@ -8,7 +8,7 @@ class StorageHelper {
     async readFromFile() {
         try {
             const data = await readFileAsync('Develop/db/db.json', 'utf8');
-            return JSON.parse(data);
+            return data;
         } catch (err) {
             console.log(err);
             return [];
@@ -24,22 +24,46 @@ class StorageHelper {
     }
 
     async getNotes() {
-        const notes = await this.readFromFile();
-        return notes;
+        try {
+            const data = await this.readFromFile();
+            let parsedNotes = [];
+            try {
+                parsedNotes = [].concat(JSON.parse(data));
+            } catch (err) {
+                console.log(err);
+            }
+            return parsedNotes;
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
     }
 
     async addNotes(note) {
-        const notes = await this.readFromFile();
-        notes.push(note);
-        await this.writeToFile(notes);
-        return note;
+        try {
+            const data = await this.readFromFile();
+            const parsedNotes = [].concat(JSON.parse(data));
+            parsedNotes.push(note);
+            await this.writeToFile(parsedNotes);
+            return note;
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
     }
 
     async deleteNotes(id) {
-        const notes = await this.readFromFile();
-        const newNotes = notes.filter((note) => note.id !== id);
-        await this.writeToFile(newNotes);
+        try {
+            const data = await this.readFromFile();
+            const parsedNotes = [].concat(JSON.parse(data));
+            const newNotes = parsedNotes.filter((note) => note.id !== id);
+            await this.writeToFile(newNotes);
+        } catch (err) {
+            console.log(err);
+        }
     }
+
 }
 
 module.exports = new StorageHelper();
