@@ -5,39 +5,41 @@ const writeFileAsync = util.promisify(fs.writeFile);
 const readFileAsync = util.promisify(fs.readFile);
 
 class StorageHelper {
-    async writeDataToFile(data, filePath) {
+    async readFromFile() {
         try {
-            await writeFileAsync(filePath, JSON.stringify(data));
-        } catch (error) {
-            console.error(error);
+            const data = await readFileAsync('Develop/db/db.json', 'utf8');
+            return JSON.parse(data);
+        } catch (err) {
+            console.log(err);
+            return [];
         }
     }
 
-    async readDataFromFile(filePath) {
+    async writeToFile(data) {
         try {
-            const data = await readFileAsync(filePath, 'utf8');
-            return JSON.parse(data);
-        } catch (error) {
-            console.error(error);
+            await writeFileAsync('Develop/db/db.json', JSON.stringify(data));
+        } catch (err) {
+            console.log(err);
         }
     }
 
     async getNotes() {
-        return this.readDataFromFile('Develop/db/db.json');
+        const notes = await this.readFromFile();
+        return notes;
     }
 
     async addNotes(note) {
-        const notes = await this.getNotes();
+        const notes = await this.readFromFile();
         notes.push(note);
-        await this.writeDataToFile(notes, 'Develop/db/db.json');
+        await this.writeToFile(notes);
+        return note;
     }
 
     async deleteNotes(id) {
-        const notes = await this.getNotes();
-        const updatedNotes = notes.filter((note) => note.id !== id);
-        await this.writeDataToFile(updatedNotes, 'Develop/db/db.json');
+        const notes = await this.readFromFile();
+        const newNotes = notes.filter((note) => note.id !== id);
+        await this.writeToFile(newNotes);
     }
-    
 }
 
-module.exports = StorageHelper;
+module.exports = new StorageHelper();
